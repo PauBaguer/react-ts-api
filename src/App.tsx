@@ -1,23 +1,45 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { useState } from "react";
+import UserService from "./services/user-service";
+import { User } from "./models/user";
+import "./App.css";
+import Table from "./components/table-component";
 
 function App() {
+  const [number, setNumber] = useState(5);
+
+  const [userList, setUserList] = useState<User[]>([]);
+
+  const [table, setTable] = useState(<div></div>);
+
+  async function getUsers() {
+    const res = await UserService.getAll();
+    const userList: User[] = await res.data;
+    setUserList(userList);
+  }
+
+  function eraseUsers() {
+    setUserList([]);
+  }
+
   return (
     <div className="App">
       <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
+        <div>
+          <span className="container">
+            <a className="waves-effect waves-light btn" onClick={getUsers}>
+              get Users
+            </a>
+
+            <a
+              className="waves-effect waves-light red btn"
+              onClick={eraseUsers}
+            >
+              Remove Users
+            </a>
+          </span>
+
+          <Table userList={userList} />
+        </div>
       </header>
     </div>
   );
