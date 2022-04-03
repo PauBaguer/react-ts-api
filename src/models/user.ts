@@ -32,3 +32,11 @@ export interface UserToSend extends Dates {
   chats: Chat[];
   categories: String[];
 }
+
+export interface RegisterUser {
+  name: String;
+  userName: String;
+  birthDate: Date;
+  mail: String;
+  password: String;
+}

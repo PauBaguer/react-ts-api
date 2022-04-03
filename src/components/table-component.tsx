@@ -1,11 +1,14 @@
 import React from "react";
 import { User } from "../models/user";
+import Actions from "./actions-component";
 
 interface Props {
   userList: User[];
+  token: string;
+  emitUserId: Function;
 }
 
-function Table({ userList }: Props) {
+function Table({ userList, token, emitUserId }: Props) {
   if (userList.length > 0) {
     return (
       <div>
@@ -15,15 +18,21 @@ function Table({ userList }: Props) {
               <th>Id</th>
               <th>Username</th>
               <th>BirthDate</th>
+              <th>Disabled</th>
+              <th></th>
             </tr>
           </thead>
           <tbody>
             {userList.map((user: User) => {
               return (
-                <tr>
+                <tr key={user._id}>
                   <td>{user._id}</td>
                   <td>{user.userName}</td>
-                  <td>{user.birthDate}</td>
+                  <td>{user.birthDate.toDateString()}</td>
+                  <td>{user.disabled ? "True" : "False"}</td>
+                  <td>
+                    <Actions user={user} token={token} emitId={emitUserId} />
+                  </td>
                 </tr>
               );
             })}
